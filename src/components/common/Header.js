@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
+import { useAuth } from '../auth/Auth';
 
 const Header = () => {
+
 
     const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
     const toggleMobileMenu = () => {
@@ -20,6 +21,18 @@ const Header = () => {
           document.body.classList.remove('toggle-sidebar');
         };
       }, [isMobileMenuOpen]);
+
+      const { logout } = useAuth();
+
+    const handleLogout = async () => {
+        try {
+            await logout();
+            // Optionally handle successful logout (e.g., redirect to login page)
+        } catch (error) {
+            console.error("Error logging out:", error);
+            // Optionally handle the error (e.g., show a message)
+        }
+    };
    
   return (
     <header id="header" className="header fixed-top d-flex align-items-center">
@@ -184,7 +197,7 @@ const Header = () => {
               </li>
               <li><hr className="dropdown-divider" /></li>
               <li>
-                <Link className="dropdown-item d-flex align-items-center" to="#">
+                <Link className="dropdown-item d-flex align-items-center" onClick={handleLogout}>
                   <i className="bi bi-box-arrow-right"></i>
                   <span>Sign Out</span>
                 </Link>
